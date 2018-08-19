@@ -37,17 +37,20 @@ cefile <- function(metarow)
 ns <- NROW(meta)
 cets <- vector("list", ns)
 names(cets) <- meta$Filename
-for(i in seq_along(fnames))
+for(i in seq_along(cets))
   cets[[i]] <- cefile(meta[i,])
 
 # Store in objects of size 1000
-ns <- length(fnames)
+ns <- length(cets)
 for(i in seq(trunc(ns/1000)+1L))
 {
   idx <- (i-1)*1000 + seq(1000)
   idx <- idx[idx < ns]
   z <- cets[idx]
-  save(z, file=paste0("../data/cets",i,".rda"),compress="bzip2")
+  assign(paste0("cets", i), z)
+  eval(parse(text =
+               paste0("save(cets",i,", file=\"../data/cets",i,".rda\",compress=\"bzip2\")")))
+  # save(z, file=paste0("../data/cets",i,".rda"),compress="bzip2")
 }
 save(meta, file="../data/meta.rda",compress="bzip2")
 

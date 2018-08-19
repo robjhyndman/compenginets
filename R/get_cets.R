@@ -1,12 +1,12 @@
 
 # Return time series where key matches some attribute
 # or is a logical vector indicating which rows of meta to return.
+#' @export
 get_cets <- function(key)
 {
   # Find index for the required series
   if(is.logical(key) & length(key)==NROW(meta))
-    idx <- key
-  else
+    idx <- which(key)  else
   {
     idx <- c(grep(key, meta$Filename),
              grep(key, meta$Keywords),
@@ -17,12 +17,15 @@ get_cets <- function(key)
   }
   # Now go and grab the series from the various data objects
   mydata <- list()
-  for(j in seq(26L))
-  {
-    cets <- eval(paste("cets",1))
-    k <- idx[(trunc(idx / 1000) + 1L) == j]
+  for(j in seq(26L)){
+   # cets <- eval(paste0("cets",j))
+    k <- idx[(trunc(idx / 1000) + 1L) == j & idx %% 1000 !=0]
+    k <- c(k, idx[(trunc(idx / 1000) + 1L) == j+1 & idx %% 1000 ==0])
+    if(length(k)==0) next
+    tmpdata <- get(paste0("cets",j))
+    mydata <-  append(mydata, tmpdata[k-(1000*(j-1))])
   }
-  return(idx)
+  return(mydata)
 }
 
-get_cets("finance")
+#get_cets("finance")
