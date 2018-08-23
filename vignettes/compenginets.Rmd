@@ -1,0 +1,42 @@
+---
+title: "Introduction to the compenginets package"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to the compenginets package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+The goal of *compenginets* is to provide all the time series from  http://www.comp-engine.org/.  
+25648 time series are available as of 23rd August 2018.  
+
+## Installation
+
+You can install the **development** version from
+[Github](https://github.com/robjhyndman/compenginets)
+
+```r
+# install.packages("devtools")
+devtools::install_github("robjhyndman/compenginets")
+```
+
+## Usage
+
+```{r usage}
+library(compenginets)
+cets_finance <- get_cets("finance")
+str(cets_finance[[1]])
+
+```
+
+## License
+
+This package is free and open source software, licensed under GPL-3
