@@ -10,19 +10,34 @@ output:
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "README-"
+  fig.path = "man/figures/README-"
 )
 ```
 
-# compenginets
+# compenginets: Data from CompEngine
 
-The goal of compenginets is to provide all the time series from \url{http://www.comp-engine.org/timeseries/}.
+The goal of compenginets is to provide all the time series from  http://www.comp-engine.org/.  
+25648 time series are available as of 23rd August 2018.  
 
-## Example
+## Installation
 
-This is a basic example which shows you how to solve a common problem:
+You can install the **development** version from
+[Github](https://github.com/robjhyndman/compenginets)
 
-```{r example}
-## basic example code
+```r
+# install.packages("devtools")
+devtools::install_github("robjhyndman/compenginets")
 ```
 
+## Usage
+
+```{r usage}
+library(compenginets)
+cets_finance <- get_cets("finance")
+str(cets_finance[[1]])
+
+```
+
+## License
+
+This package is free and open source software, licensed under GPL-3

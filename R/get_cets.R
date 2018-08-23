@@ -1,7 +1,15 @@
-
-# Return time series where key matches some attribute
-# or is a logical vector indicating which rows of meta to return.
-#' @export
+#' Extracting time series from the CompEngine database
+#'
+#' Return time series where key matches some attribute
+#' or is a logical vector indicating which rows of meta to return.
+#'
+#'
+#' @param key A keyword describing attribute of the required time series
+#' @return A list consisting of the selected series.
+#' @author Rob Hyndman
+#' @examples
+#' cets_finance <- get_cets("finance")
+#' @export get_cets
 get_cets <- function(key)
 {
   # Find index for the required series
