@@ -33,6 +33,7 @@ get_cets <- function(key)
     tmpdata <- get(paste0("cets",j))
     mydata <-  append(mydata, tmpdata[k-(1000*(j-1))])
   }
+  if(length(mydata) == 0) warning("No matched time serie was found")
   return(mydata)
 }
 
