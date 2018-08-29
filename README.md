@@ -36,4 +36,4 @@ str(cets_finance[[1]])
 License
 -------
 
-This package is free and open source software, licensed under GPL-3
+This package is free and open source software, licensed under CC0
