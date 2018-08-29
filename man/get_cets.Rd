@@ -4,10 +4,15 @@
 \alias{get_cets}
 \title{Extracting time series from the CompEngine database}
 \usage{
-get_cets(key)
+get_cets(key, category_only = TRUE)
 }
 \arguments{
-\item{key}{A keyword describing attribute of the required time series}
+\item{key}{A keyword describing attribute of the required time series.}
+
+\item{category_only}{A logical value indicating whether the selection process
+search \code{key} in \code{category} attribute only. If set to \code{FALSE},
+the function will also search the keyword in \code{source}, \code{name},
+\code{timeseries_id},  \code{contributor}, and \code{description} attributes.}
 }
 \value{
 A list consisting of the selected series.
