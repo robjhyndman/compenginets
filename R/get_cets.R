@@ -35,18 +35,22 @@ get_cets <- function(key, category_only = TRUE)
     }
   if(length(idx) == 0) stop("No matched time series was found")
   # Now go and grab the series from the various data objects
-  mydata <- setNames(split(cets[idx,], seq(length(idx))), cets[idx,]$name)
-  mydata <- lapply(mydata, convert_datapoints)
+  mydata <- list()
+  ns <- NROW(meta)
+  for(j in seq(trunc(ns/1000)+1L)){
+    # cets <- eval(paste0("cets",j))
+    k <- idx[(trunc(idx / 1000) + 1L) == j & idx %% 1000 !=0]
+    k <- c(k, idx[(trunc(idx / 1000) + 1L) == j+1 & idx %% 1000 ==0])
+    if(length(k)==0) next
+    tmpdata <- get(paste0("cets",j))
+    mydata <-  append(mydata, tmpdata[k-(1000*(j-1))])
+  }
   return(mydata)
 }
 
 
 
-convert_datapoints <- function(datarow){
-  points <- as.numeric(unlist(strsplit(datarow$datapoints, ",")))
-  attributes(points) <- datarow[, -2]
-  return(points)
-}
+
 
 
 

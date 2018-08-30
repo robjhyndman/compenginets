@@ -48,8 +48,7 @@ for(i in seq(trunc(ns/1000)+1L))
   idx <- idx[idx < ns]
   z <- cets[idx]
   assign(paste0("cets", i), z)
-  eval(parse(text =
-               paste0("save(cets",i,", file=\"../data/cets",i,".rda\",compress=\"bzip2\")")))
+  save(list=paste0("cets",i), file=paste0("../data/cets",i,".rda"),compress="bzip2")
   # save(z, file=paste0("../data/cets",i,".rda"),compress="bzip2")
 }
 save(meta, file="../data/meta.rda",compress="bzip2")

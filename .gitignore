@@ -1,3 +1,6 @@
 .Rproj.user
 .Rhistory
 inst/doc
+data-raw/comp-engine-export-datapoints.*.csv
+data-raw/comp-engine-export-metadata.*.csv
+data-raw/data_raw.zip
