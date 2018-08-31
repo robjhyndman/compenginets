@@ -2,9 +2,15 @@ Package: compenginets
 Version: 0.1
 Title: Time series from http://www.comp-engine.org/timeseries/
 Description: All time series from the comp-engine database are included, along with some meta data.
-Authors@R: person("Rob", "Hyndman", email = "Rob.Hyndman@monash.edu", role = c("aut", "cre"))
-License: GPL-3 + file LICENSE
+Authors@R: c(
+    person("Rob", "Hyndman", email = "Rob.Hyndman@monash.edu", role = c("aut", "cre")),
+    person("Yangzhuoran", "Yang", email = "Fin.Yang@monash.edu", role = c("aut")))
+License: CC0
 Encoding: UTF-8
 LazyData: true
 ByteCompile: true
 RoxygenNote: 6.0.1
+Suggests: knitr,
+    rmarkdown,
+    testthat
+VignetteBuilder: knitr
