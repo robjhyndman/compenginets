@@ -27,6 +27,14 @@ update_cets <- function(rm.old = TRUE){
   }
   #save(cets, file="data/cets.rda", compress="bzip2")
   save(meta, file="data/meta.rda",compress="bzip2")
+
+  # download category information
+  if(requireNamespace("jsonlite", quietly = TRUE)){
+    cate_path <- try(category_scraping(), silent = TRUE)
+    if("try-error" %in% class(cate_path))
+      warning("An error occured when the category information was being downloaded.\n", cate_path)
+    save(cate_path, file="data/cate_path.rda", compress="bzip2")
+  } else warning("The package `jsonlite` is not installed. The category information cannot be updated.")
   cat("Data from CompEngine is up to date.\n")
 
   # Delete old version data and record date
@@ -46,11 +54,34 @@ update_cets <- function(rm.old = TRUE){
       saveRDS(c(date_updated, Sys.Date()), "data-raw/update-info.rds")
     }
   } else  saveRDS(Sys.Date(), "data-raw/update-info.rds")
-  cat("Last update is recorded.\n")
+  cat("Updated date is recorded.\n")
 }
+
 
 convert_datapoints <- function(pointsrow, metarow){
   points <- as.numeric(unlist(strsplit(pointsrow$datapoints, ",")))
   attributes(points) <- metarow
   return(points)
+}
+
+
+category_scraping <- function(){
+  cate_tree <- jsonlite::fromJSON("https://www.comp-engine.org/api/categories/browse")
+  vec_tem <- unlist(cate_tree[[1]])
+  attributes(vec_tem) <- NULL
+  slug <- cate_tree$categories$slug
+  slug <- c(slug, vec_tem[grep("/", vec_tem)])
+  slug <- unique(gsub("-", " ", slug))
+  category <- unique(unlist(strsplit(slug, "/")))
+  cate_path <- setNames(split(category, seq(length(category))), category)
+  cate_path <- mapply(walk_along, cate_path, slug, SIMPLIFY = FALSE)
+  return(cate_path)
+}
+
+walk_along <- function(a_cat, slug){
+  main <- a_cat
+  road <- slug[grep(main, slug)]
+  road <- gsub(paste0("^.*", main), "", road)
+  subcat <- unique(unlist(strsplit(road, "/")))
+  return(c(main,subcat[subcat!=""]))
 }
