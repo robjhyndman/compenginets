@@ -5,17 +5,18 @@ update_cets <- function(rm.old = TRUE){
                 mode = "wb")
   unzip("data-raw/data_raw.zip", exdir = "data-raw")
   cat("Data is downloaded and unziped.\n")
+
   datapoints <- paste0("data-raw/comp-engine-export-datapoints.",gsub("-", "", Sys.Date()), ".csv")
   metadata <- paste0("data-raw/comp-engine-export-metadata.",gsub("-", "", Sys.Date()), ".csv")
   meta <- read.csv(metadata, stringsAsFactors = FALSE)
   points <- read.csv(datapoints, stringsAsFactors = FALSE)
-
   #cets <- left_join(points, meta, by = "timeseries_id")
   #cets <- merge(x = points, y = meta, by = "timeseries_id", all.x = TRUE)
   cets <- setNames(split(points, seq(NROW(meta))), meta$name)
   metarow <- setNames(split(meta, seq(NROW(meta))), meta$name)
   cets <- mapply(convert_datapoints, pointsrow = cets, metarow = metarow, SIMPLIFY = FALSE)
   cat("Data is cleaned.\n")
+
   ns <- length(cets)
   for(i in seq(trunc(ns/1000)+1L))
   {
@@ -43,7 +44,7 @@ update_cets <- function(rm.old = TRUE){
     if(tail(date_updated, 1) != Sys.Date()){
       if(rm.old == TRUE){
         for(i in 1:length(date_updated)){
-          upda <- data_updated[i]
+          upda <- date_updated[i]
           last_points <- paste0("data-raw/comp-engine-export-datapoints.", gsub("-", "", upda), ".csv")
           last_meta <- paste0("data-raw/comp-engine-export-metadata.", gsub("-", "", upda), ".csv")
           if(file.exists(last_points)) file.remove(last_points)
@@ -74,7 +75,7 @@ category_scraping <- function(){
   slug <- unique(gsub("-", " ", slug))
   category <- unique(unlist(strsplit(slug, "/")))
   cate_path <- setNames(split(category, seq(length(category))), category)
-  cate_path <- mapply(walk_along, cate_path, slug, SIMPLIFY = FALSE)
+  cate_path <- mapply(walk_along, cate_path, MoreArgs = list(slug=slug), SIMPLIFY = FALSE)
   return(cate_path)
 }
 

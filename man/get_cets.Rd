@@ -4,15 +4,19 @@
 \alias{get_cets}
 \title{Extracting time series from the CompEngine database}
 \usage{
-get_cets(key, category_only = TRUE)
+get_cets(key, category = TRUE)
 }
 \arguments{
-\item{key}{A keyword describing attribute of the required time series.}
+\item{key}{A keyword describing attribute of the required time series,
+or a logical vector indicating which rows of meta to return.}
 
-\item{category_only}{A logical value indicating whether the selection process
-search \code{key} in \code{category} attribute only. If set to \code{FALSE},
-the function will also search the keyword in \code{source}, \code{name},
-\code{timeseries_id},  \code{contributor}, and \code{description} attributes.}
+\item{category}{A logical value indicating whether the selection process
+search \code{key} in \code{category} attribute. If \code{TRUE}, the \code{get_cets}
+will return time series whose category match the keyword and the time series that belong to
+some subcategory under the matched category. If \code{FALSE},
+the function will return time series which have the keyword in their \code{source}, \code{name},
+\code{timeseries_id},  \code{contributor}, or \code{description} attributes.
+This argument is only valid when \code{key} is not a logical vector.}
 }
 \value{
 A list consisting of the selected series.
@@ -22,8 +26,20 @@ Return time series where key matches some attribute
 or is a logical vector indicating which rows of meta to return.
 }
 \examples{
+# Getting series within Finance category (including subcategory)
 cets_finance <- get_cets("finance")
+unique(mapply(attr, cets_finance, MoreArgs = list(which = "category")))
+
+# Getting series whose sourse is Macaulay Library
+cets_ML <- get_cets("Macaulay Library", category = FALSE)
+unique(mapply(attr, cets_ML, MoreArgs = list(which = "source")))
+
+# Extract time series by a logical vector with length equals to the number of series
+idx <- sample(c(T, F), NROW(meta), T)
+cets_logic <- get_cets(idx)
 }
 \author{
-Rob Hyndman
+Rob J Hyndman
+
+Yangzhuoran Yang
 }
