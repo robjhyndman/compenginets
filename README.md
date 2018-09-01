@@ -4,11 +4,12 @@ compenginets: Data from CompEngine
 
 The goal of compenginets is to provide all the time series from
 <http://www.comp-engine.org/>.  
-25648 time series are available as of 23rd August 2018.
+24902 time series are available as of 2018-09-01.
 
 Installation
 ------------
 
+`compenginets` currently isn’t on CRAN.  
 You can install the **development** version from
 [Github](https://github.com/robjhyndman/compenginets)
 
@@ -24,13 +25,16 @@ Usage
 library(compenginets)
 cets_finance <- get_cets("finance")
 str(cets_finance[[1]])
-#>  num [1:2391] 64.3 42 52.4 43.7 48 ...
-#>  - attr(*, "Filename")= chr "FI_yahoo_HL_000001_SS.dat"
-#>  - attr(*, "Keywords")= chr "finance,yahoo,opening"
-#>  - attr(*, "Length")= num 2391
-#>  - attr(*, "Description")= chr ""
-#>  - attr(*, "SourceString")= chr "Yahoo Finance"
-#>  - attr(*, "CategoryString")= chr "High low"
+#>  num [1:10000] 333 333 340 328 330 ...
+#>  - attr(*, "timeseries_id")= chr "003da696-3872-11e8-8680-0242ac120002"
+#>  - attr(*, "timestamp_created")= chr "2018-04-05 01:38:11"
+#>  - attr(*, "source")= chr "Yahoo Finance"
+#>  - attr(*, "category")= chr "Opening prices"
+#>  - attr(*, "contributor")= chr ""
+#>  - attr(*, "name")= chr "FI_yahoo_Op_DJU"
+#>  - attr(*, "description")= chr ""
+#>  - attr(*, "sampling_unit")= chr ""
+#>  - attr(*, "sampling_rate")= num NA
 ```
 
 License

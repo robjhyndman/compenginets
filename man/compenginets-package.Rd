@@ -9,7 +9,7 @@
 \url{https://www.comp-engine.org/}.
 }
 \description{
-The 25648 time series from CompEngine, a self-organizing database of time series data.
+The time series from CompEngine, a self-organizing database of time series data.
 }
 \author{
 Rob J Hyndman. \email{Rob.Hyndman@monash.edu}

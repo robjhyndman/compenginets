@@ -17,10 +17,11 @@ knitr::opts_chunk$set(
 # compenginets: Data from CompEngine
 
 The goal of compenginets is to provide all the time series from  http://www.comp-engine.org/.  
-25648 time series are available as of 23rd August 2018.  
+`r NROW(compenginets::meta)` time series are available as of `r Sys.Date()`.  
 
 ## Installation
 
+`compenginets` currently isn't on CRAN.  
 You can install the **development** version from
 [Github](https://github.com/robjhyndman/compenginets)
 

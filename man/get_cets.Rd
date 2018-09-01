@@ -12,10 +12,11 @@ or a logical vector indicating which rows of meta to return.}
 
 \item{category}{A logical value indicating whether the selection process
 search \code{key} in \code{category} attribute. If \code{TRUE}, the \code{get_cets}
-will return time series whose category match the keyword and the time series that belong to
+will return time series whose category match the keyword or belong to
 some subcategory under the matched category. If \code{FALSE},
-the function will return time series which have the keyword in their \code{source}, \code{name},
-\code{timeseries_id},  \code{contributor}, or \code{description} attributes.
+the function will return time series which have the keyword in their \code{timeseries_id},
+\code{timestamp_created}, \code{source}, \code{contributor}, \code{name},
+\code{description}, \code{sampling_unit}, or \code{sampling_rate} attributes.
 This argument is only valid when \code{key} is not a logical vector.}
 }
 \value{
@@ -34,8 +35,9 @@ unique(mapply(attr, cets_finance, MoreArgs = list(which = "category")))
 cets_ML <- get_cets("Macaulay Library", category = FALSE)
 unique(mapply(attr, cets_ML, MoreArgs = list(which = "source")))
 
-# Extract time series by a logical vector with length equals to the number of series
-idx <- sample(c(T, F), NROW(meta), T)
+# Extract time series by a random generated logical vector with length equals to the number of series
+set.seed(2222)
+idx <- sample(c(TRUE, FALSE), NROW(meta), replace = TRUE)
 cets_logic <- get_cets(idx)
 }
 \author{

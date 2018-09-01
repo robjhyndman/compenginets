@@ -8,10 +8,11 @@
 #' or a logical vector indicating which rows of meta to return.
 #' @param category A logical value indicating whether the selection process
 #' search \code{key} in \code{category} attribute. If \code{TRUE}, the \code{get_cets}
-#' will return time series whose category match the keyword and the time series that belong to
+#' will return time series whose category match the keyword or belong to
 #' some subcategory under the matched category. If \code{FALSE},
-#' the function will return time series which have the keyword in their \code{source}, \code{name},
-#' \code{timeseries_id},  \code{contributor}, or \code{description} attributes.
+#' the function will return time series which have the keyword in their \code{timeseries_id},
+#' \code{timestamp_created}, \code{source}, \code{contributor}, \code{name},
+#' \code{description}, \code{sampling_unit}, or \code{sampling_rate} attributes.
 #' This argument is only valid when \code{key} is not a logical vector.
 #' @return A list consisting of the selected series.
 #' @author Rob J Hyndman
@@ -25,8 +26,9 @@
 #' cets_ML <- get_cets("Macaulay Library", category = FALSE)
 #' unique(mapply(attr, cets_ML, MoreArgs = list(which = "source")))
 #'
-#' # Extract time series by a logical vector with length equals to the number of series
-#' idx <- sample(c(T, F), NROW(meta), T)
+#' # Extract time series by a random generated logical vector with length equals to the number of series
+#' set.seed(2222)
+#' idx <- sample(c(TRUE, FALSE), NROW(meta), replace = TRUE)
 #' cets_logic <- get_cets(idx)
 #' @export get_cets
 get_cets <- function(key, category = TRUE){
@@ -35,19 +37,22 @@ get_cets <- function(key, category = TRUE){
     idx <- which(key)  else
     {
       if(category == TRUE){
-      category_list <- names(cate_path)
-      cidx <- grep(key, category_list, ignore.case = TRUE)
-      if(length(cidx)==0) stop("No category matches the keyword.")
-      cidx <- cate_path[[cidx]]
-      idx <- sapply(cidx, grep, x=compenginets::meta$category, ignore.case = TRUE)
-      idx <- unlist(idx)
-    } else {
-      idx <- c(grep(key, compenginets::meta$source, ignore.case = TRUE),
-               grep(key, compenginets::meta$name, ignore.case = TRUE),
-               grep(key, compenginets::meta$timeseries_id, ignore.case = TRUE),
-               grep(key, compenginets::meta$contributor, ignore.case = TRUE),
-               grep(key, compenginets::meta$description, ignore.case = TRUE))
-    }
+        category_list <- names(cate_path)
+        cidx <- grep(key, category_list, ignore.case = TRUE)
+        if(length(cidx)==0) stop("No category matches the keyword.")
+        cidx <- cate_path[[cidx]]
+        idx <- sapply(cidx, grep, x=compenginets::meta$category, ignore.case = TRUE)
+        idx <- unlist(idx)
+      } else {
+        idx <- c(grep(key, compenginets::meta$timeseries_id, ignore.case = TRUE),
+                 grep(key, compenginets::meta$timestamp_created, ignore.case = TRUE),
+                 grep(key, compenginets::meta$source, ignore.case = TRUE),
+                 grep(key, compenginets::meta$contributor, ignore.case = TRUE),
+                 grep(key, compenginets::meta$name, ignore.case = TRUE),
+                 grep(key, compenginets::meta$description, ignore.case = TRUE),
+                 grep(key, compenginets::meta$sampling_unit, ignore.case = TRUE),
+                 grep(key, compenginets::meta$sampling_rate, ignore.case = TRUE))
+      }
 
       idx <- sort(unique(idx))
     }
