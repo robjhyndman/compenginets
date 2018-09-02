@@ -4,31 +4,54 @@
 #' or is a logical vector indicating which rows of meta to return.
 #'
 #'
-#' @param key A keyword describing attribute of the required time series.
-#' @param category_only A logical value indicating whether the selection process
-#' search \code{key} in \code{category} attribute only. If set to \code{FALSE},
-#' the function will also search the keyword in \code{source}, \code{name},
-#' \code{timeseries_id},  \code{contributor}, and \code{description} attributes.
+#' @param key A keyword describing attribute of the required time series,
+#' or a logical vector indicating which rows of meta to return.
+#' @param category A logical value indicating whether the selection process
+#' search \code{key} in \code{category} attribute. If \code{TRUE}, the \code{get_cets}
+#' will return time series whose category match the keyword or belong to
+#' some subcategory under the matched category. If \code{FALSE},
+#' the function will return time series which have the keyword in their \code{timeseries_id},
+#' \code{timestamp_created}, \code{source}, \code{contributor}, \code{name},
+#' \code{description}, \code{sampling_unit}, or \code{sampling_rate} attributes.
+#' This argument is only valid when \code{key} is not a logical vector.
 #' @return A list consisting of the selected series.
-#' @author Rob Hyndman
+#' @author Rob J Hyndman
+#' @author Yangzhuoran Yang
 #' @examples
+#' # Getting series within Finance category (including subcategory)
 #' cets_finance <- get_cets("finance")
+#' unique(mapply(attr, cets_finance, MoreArgs = list(which = "category")))
+#'
+#' # Getting series whose sourse is Macaulay Library
+#' cets_ML <- get_cets("Macaulay Library", category = FALSE)
+#' unique(mapply(attr, cets_ML, MoreArgs = list(which = "source")))
+#'
+#' # Extract time series by a random generated logical vector with length equals to the number of series
+#' set.seed(2222)
+#' idx <- sample(c(TRUE, FALSE), NROW(meta), replace = TRUE)
+#' cets_logic <- get_cets(idx)
 #' @export get_cets
-get_cets <- function(key, category_only = TRUE)
-{
+get_cets <- function(key, category = TRUE){
   # Find index for the required series
   if(is.logical(key) & length(key)==NROW(compenginets::meta))
     idx <- which(key)  else
     {
-      if(category_only == TRUE){
-        idx <- grep(key, compenginets::meta$category, ignore.case = TRUE)
+      if(category == TRUE){
+        category_list <- names(cate_path)
+        cidx <- grep(key, category_list, ignore.case = TRUE)
+        if(length(cidx)==0) stop("No category matches the keyword.")
+        cidx <- cate_path[[cidx]]
+        idx <- sapply(cidx, grep, x=compenginets::meta$category, ignore.case = TRUE)
+        idx <- unlist(idx)
       } else {
-        idx <- c(grep(key, compenginets::meta$category, ignore.case = TRUE),
+        idx <- c(grep(key, compenginets::meta$timeseries_id, ignore.case = TRUE),
+                 grep(key, compenginets::meta$timestamp_created, ignore.case = TRUE),
                  grep(key, compenginets::meta$source, ignore.case = TRUE),
-                 grep(key, compenginets::meta$name, ignore.case = TRUE),
-                 grep(key, compenginets::meta$timeseries_id, ignore.case = TRUE),
                  grep(key, compenginets::meta$contributor, ignore.case = TRUE),
-                 grep(key, compenginets::meta$description, ignore.case = TRUE))
+                 grep(key, compenginets::meta$name, ignore.case = TRUE),
+                 grep(key, compenginets::meta$description, ignore.case = TRUE),
+                 grep(key, compenginets::meta$sampling_unit, ignore.case = TRUE),
+                 grep(key, compenginets::meta$sampling_rate, ignore.case = TRUE))
       }
 
       idx <- sort(unique(idx))
@@ -47,11 +70,6 @@ get_cets <- function(key, category_only = TRUE)
   }
   return(mydata)
 }
-
-
-
-
-
 
 
 # Old version

@@ -1,6 +1,6 @@
 #' Data from CompEngine
 #'
-#' The 25648 time series from CompEngine, a self-organizing database of time series data.
+#' The time series from CompEngine, a self-organizing database of time series data.
 #'
 #'
 #' @name compenginets-package
