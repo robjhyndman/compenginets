@@ -40,7 +40,10 @@ get_cets <- function(key, category = TRUE){
         category_list <- names(cate_path)
         cidx <- grep(key, category_list, ignore.case = TRUE)
         if(length(cidx)==0) stop("No category matches the keyword.")
-        cidx <- cate_path[[cidx]]
+        if(length(cidx)>1) warning("More than one category matched.\n Categories matched:\n ",
+                                   paste0(category_list[cidx], "\n "))
+        cidx <- unlist(cate_path[cidx])
+        attributes(cidx) <- NULL
         idx <- sapply(cidx, grep, x=compenginets::meta$category, ignore.case = TRUE)
         idx <- unlist(idx)
       } else {

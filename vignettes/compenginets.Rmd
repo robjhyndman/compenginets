@@ -36,7 +36,7 @@ devtools::install_github("robjhyndman/compenginets")
 
 ## Usage
 
-This package intends to provide means to access data from CompEngine with ease with an `R` solution. To get the data stored in the package, directly calling the name of the data set is feasible (e.g. `cets1`, `cets2`, etc), but not recommended. Instead, function `get_cets` can be used to return time series where key matches some attribute or is a logical vector indicating which rows of meta to return.  
+This package intends to provide means to access data from CompEngine with ease with an `R` solution. To get the data stored in the package, directly calling the name of the data set is feasible (e.g. `cets1`, `cets2`, etc. See `?cets`), but not recommended. Instead, function `get_cets` can be used to return time series where key matches some attribute or is a logical vector indicating which rows of meta to return.  
 With the default option, `get_cets` returns time series whose category match the keyword or belong to some subcategory under the matched category. 
 
 ```{r usage}
