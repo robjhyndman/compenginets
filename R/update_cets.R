@@ -39,12 +39,12 @@ update_cets <- function(rm.old = TRUE){
   cat("Data from CompEngine is up to date.\n")
 
   # Delete old version data and record date
-  if(file.exists("data-raw/update-info.rds")){
-    date_updated <- readRDS("data-raw/update-info.rds")
-    if(tail(date_updated, 1) != Sys.Date()){
+  if(file.exists("data-raw/update-info.txt")){
+    date_updated <- read.table("data-raw/update-info.txt", stringsAsFactors = FALSE)
+    if(date_updated[NROW(date_updated),] != Sys.Date()){
       if(rm.old == TRUE){
-        for(i in 1:length(date_updated)){
-          upda <- date_updated[i]
+        for(i in 1:NROW(date_updated)){
+          upda <- date_updated[i,]
           last_points <- paste0("data-raw/comp-engine-export-datapoints.", gsub("-", "", upda), ".csv")
           last_meta <- paste0("data-raw/comp-engine-export-metadata.", gsub("-", "", upda), ".csv")
           if(file.exists(last_points)) file.remove(last_points)
@@ -52,9 +52,9 @@ update_cets <- function(rm.old = TRUE){
         }
         cat("Outdated raw data is removed.\n")
       }
-      saveRDS(c(date_updated, Sys.Date()), "data-raw/update-info.rds")
+      write.table(rbind(date_updated, as.character(Sys.Date())), "data-raw/update-info.txt")
     }
-  } else  saveRDS(Sys.Date(), "data-raw/update-info.rds")
+  } else  write.table(data.frame(date_updated=Sys.Date()), "data-raw/update-info.txt")
   cat("Updated date is recorded.\n")
 }
 
@@ -86,3 +86,7 @@ walk_along <- function(a_cat, slug){
   subcat <- unique(unlist(strsplit(road, "/")))
   return(c(main,subcat[subcat!=""]))
 }
+
+
+
+
