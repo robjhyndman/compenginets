@@ -3,9 +3,11 @@ Version: 0.1
 Title: Time series from http://www.comp-engine.org/timeseries/
 Description: All time series from the comp-engine database are included, along with some meta data.
 Authors@R: c(
-    person("Rob", "Hyndman", email = "Rob.Hyndman@monash.edu", role = c("aut", "cre")),
+    person("Rob", "Hyndman", email = "Rob.Hyndman@monash.edu", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-2140-5352")),
     person("Yangzhuoran", "Yang", email = "Fin.Yang@monash.edu", role = c("aut")))
 License: CC0
+URL: https://github.com/robjhyndman/compenginets
+BugReports: https://github.com/robjhyndman/compenginets/issues
 Encoding: UTF-8
 LazyData: true
 ByteCompile: true

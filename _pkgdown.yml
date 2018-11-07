@@ -1,0 +1,49 @@
+template:
+  params:
+    bootswatch: flatly
+
+authors:
+  Rob Hyndman:
+    href: http://robjhyndman.com
+
+navbar:
+  structure:
+    left:
+    - home
+    - intro
+    - reference
+    - articles
+    - tutorials
+    - news
+    right: github
+  components:
+    home:
+      icon: fa-home fa-lg
+      href: index.html
+    reference:
+      text: Reference
+      href: reference/index.html
+    intro:
+      text: Get started
+      href: articles/compenginets.html
+    news:
+      text: Changelog
+      href: news/index.html
+    github:
+      icon: fa-github fa-lg
+      href: https://github.com/robjhyndman/compenginets
+
+
+
+
+
+reference:
+- title: Function
+  desc: Extracting data.
+  contents:
+  - '`get_cets`'
+- title: Metadata
+  desc: ~
+  contents:
+  - '`cate_path`'
+  - '`meta`'
