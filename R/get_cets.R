@@ -1,106 +1,95 @@
+
 #' Extracting time series from the CompEngine database
 #'
-#' Return time series where key matches some attribute
-#' or is a logical vector indicating which rows of meta to return.
 #'
 #'
-#' @param key A keyword describing attribute of the required time series,
-#' or a logical vector indicating which rows of meta to return.
-#' @param category A logical value indicating whether the selection process
-#' search \code{key} in \code{category} attribute. If \code{TRUE}, the \code{get_cets}
-#' will return time series whose category match the keyword or belong to
-#' some subcategory under the matched category. If \code{FALSE},
-#' the function will return time series which have the keyword in their \code{timeseries_id},
-#' \code{timestamp_created}, \code{source}, \code{contributor}, \code{name},
-#' \code{description}, \code{sampling_unit}, or \code{sampling_rate} attributes.
-#' This argument is only valid when \code{key} is not a logical vector.
-#' @return A list consisting of the selected series.
-#' @author Rob J Hyndman
-#' @author Yangzhuoran Yang
+#'
+#'
+#'
+#'
 #' @examples
-#' # Getting series within Finance category (including subcategory)
-#' cets_finance <- get_cets("finance")
-#' unique(mapply(attr, cets_finance, MoreArgs = list(which = "category")))
-#'
-#' # Getting series whose sourse is Macaulay Library
-#' cets_ML <- get_cets("Macaulay Library", category = FALSE)
-#' unique(mapply(attr, cets_ML, MoreArgs = list(which = "source")))
-#'
-#' # Extract time series by a random generated logical vector with length equals to the number of series
-#' set.seed(2222)
-#' idx <- sample(c(TRUE, FALSE), NROW(meta), replace = TRUE)
-#' cets_logic <- get_cets(idx)
-#' @export get_cets
-get_cets <- function(key, category = TRUE){
-  # Find index for the required series
-  if(is.logical(key) & length(key)==NROW(compenginets::meta))
-    idx <- which(key)  else
-    {
-      if(category == TRUE){
-        category_list <- names(cate_path)
-        cidx <- grep(key, category_list, ignore.case = TRUE)
-        if(length(cidx)==0) stop("No category matches the keyword.")
-        if(length(cidx)>1) warning("More than one category matched.\n Categories matched:\n ",
-                                   paste0(category_list[cidx], "\n "))
-        cidx <- unlist(cate_path[cidx])
-        attributes(cidx) <- NULL
-        idx <- sapply(cidx, grep, x=compenginets::meta$category, ignore.case = TRUE)
-        idx <- unlist(idx)
-      } else {
-        idx <- c(grep(key, compenginets::meta$timeseries_id, ignore.case = TRUE),
-                 grep(key, compenginets::meta$timestamp_created, ignore.case = TRUE),
-                 grep(key, compenginets::meta$source, ignore.case = TRUE),
-                 grep(key, compenginets::meta$contributor, ignore.case = TRUE),
-                 grep(key, compenginets::meta$name, ignore.case = TRUE),
-                 grep(key, compenginets::meta$description, ignore.case = TRUE),
-                 grep(key, compenginets::meta$sampling_unit, ignore.case = TRUE),
-                 grep(key, compenginets::meta$sampling_rate, ignore.case = TRUE))
-      }
+#' finance_m4 <- get_cets("M4_W138_Finance_1", category = FALSE)
+#' a <- get_cets("real")
+get_cets <- function(key, category = TRUE, maxpage = 10){
+  URL <- "https://www.comp-engine.org"
 
-      idx <- sort(unique(idx))
+  if(category){
+    PATH <- paste0("api/public/timeseries/filter?format=json&category=",key,"&page=",1)
+    content <- access_api(url = URL, path = PATH)
+    content_list <- get_datalist(content)
+    if(content$totalPages > 1 & maxpage !=1){
+      content_rest <- lapply(2:min(maxpage, content$totalPages), category_rest, key = key)
     }
-  if(length(idx) == 0) stop("No matched time series was found")
-  # Now go and grab the series from the various data objects
-  mydata <- list()
-  ns <- NROW(meta)
-  for(j in seq(trunc(ns/1000)+1L)){
-    # cets <- eval(paste0("cets",j))
-    k <- idx[(trunc(idx / 1000) + 1L) == j & idx %% 1000 !=0]
-    k <- c(k, idx[(trunc(idx / 1000) + 1L) == j+1 & idx %% 1000 ==0])
-    if(length(k)==0) next
-    tmpdata <- get(paste0("cets",j))
-    mydata <-  append(mydata, tmpdata[k-(1000*(j-1))])
+    rest_list <- do.call(c,lapply(content_rest, get_datalist))
+
+    end <- c(content_list, rest_list)
+  } else {
+    PATH <- paste0("api/public/timeseries?name=", key)
+    content <- access_api(url = URL, path = PATH)
+
+    name <- content$name
+    description <- content$description
+    samplingInformation <- content$samplingInformation
+    source <- try(content$source, silent = TRUE)
+    if(is.null(source)) source <- NA
+    tags <- content$tags$name
+    cnu <- as.data.frame(content$category[c("name","uri")], stringsAsFactors = F)
+
+    sfi <- content$sfi
+    data <- content$timeSeries[["raw"]]
+    end <- give_attributes(data = data, name = name, description = description,
+                  samplingInformation = samplingInformation,
+                  tags = tags,  cnu = cnu, sfi = sfi, source = source)
   }
-  return(mydata)
+  return(end)
 }
 
 
-# Old version
-# get_cets <- function(key)
-# {
-#   # Find index for the required series
-#   if(is.logical(key) & length(key)==NROW(compenginets::meta))
-#     idx <- which(key)  else
-#     {
-#       idx <- c(grep(key, compenginets::meta$Filename),
-#                grep(key, compenginets::meta$Keywords),
-#                grep(key, compenginets::meta$Description),
-#                grep(key, compenginets::meta$SourceString),
-#                grep(key, compenginets::meta$CategoryString))
-#       idx <- sort(unique(idx))
-#     }
-#   # Now go and grab the series from the various data objects
-#   mydata <- list()
-#   for(j in seq(26L)){
-#     # cets <- eval(paste0("cets",j))
-#     k <- idx[(trunc(idx / 1000) + 1L) == j & idx %% 1000 !=0]
-#     k <- c(k, idx[(trunc(idx / 1000) + 1L) == j+1 & idx %% 1000 ==0])
-#     if(length(k)==0) next
-#     tmpdata <- get(paste0("cets",j))
-#     mydata <-  append(mydata, tmpdata[k-(1000*(j-1))])
-#   }
-#   if(length(mydata) == 0) warning("No matched time series was found")
-#   return(mydata)
-# }
 
-#get_cets("finance")
+access_api <- function(url, path){
+  raw_response <- httr::GET(url = url, path = path)
+  raw_content <- rawToChar(raw_response$content)
+  content <- jsonlite::fromJSON(raw_content)
+  return(content)
+}
+
+category_rest <- function(key, page){
+  PATH <- paste0("api/public/timeseries/filter?format=json&category=",key,"&page=",page)
+  access_api(url = URL, path = PATH)
+}
+
+get_datalist <- function(content){
+  name <- content$timeSeries[,c("name")]
+  name <- split(name, seq(NROW(name)))
+
+  description <- content$timeSeries[,c("description")]
+  description <- split(description, seq(NROW(description)))
+
+  samplingInformation <- content$timeSeries[,c("name", "description", "samplingInformation")]
+  samplingInformation <- split(samplingInformation, seq(NROW(samplingInformation)))
+
+  source <- try(content$timeSeries[,"source"][,"name"], silent = TRUE)
+  if(class(source) == "try-error") source <- rep(NA, NROW(name)) else
+    source <- split(source, seq(NROW(source)))
+
+  tags <- lapply(content$timeSeries[,"tags"], function(x) x[,"name"])
+
+  cnu <- content$timeSeries[,"category"][,c("name","uri")]
+  cnu <- split(cnu, seq(NROW(cnu)))
+
+  sfi <- content$timeSeries[,"sfi"]
+  data <- content$timeSeries$timeSeries[,"raw"]
+  end <- mapply(give_attributes,data = data, name = name, description = description,
+                samplingInformation = samplingInformation,
+                tags = tags,  cnu = cnu, sfi = sfi, source = source, SIMPLIFY = FALSE)
+  names(end) <- name
+  return(end)
+}
+
+give_attributes <- function(data, name, description, samplingInformation, tags, cnu, sfi, source){
+  attributes(data) <- c(name = name, description = description,
+                        samplingInformation = samplingInformation,
+                        tags = list(tags),  category = cnu, sfi = sfi, source = source)
+  data <- ts(data)
+  return(data)
+}
