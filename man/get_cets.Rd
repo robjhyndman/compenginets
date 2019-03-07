@@ -4,44 +4,51 @@
 \alias{get_cets}
 \title{Extracting time series from the CompEngine database}
 \usage{
-get_cets(key, category = TRUE)
+get_cets(key, category = TRUE, maxpage = 10)
 }
 \arguments{
-\item{key}{A keyword describing attribute of the required time series,
-or a logical vector indicating which rows of meta to return.}
+\item{key}{The name of the time series or the name of the category,
+depending on value of \code{category}}
 
-\item{category}{A logical value indicating whether the selection process
-search \code{key} in \code{category} attribute. If \code{TRUE}, the \code{get_cets}
+\item{category}{If \code{TRUE}, the \code{get_cets}
 will return time series whose category match the keyword or belong to
 some subcategory under the matched category. If \code{FALSE},
-the function will return time series which have the keyword in their \code{timeseries_id},
-\code{timestamp_created}, \code{source}, \code{contributor}, \code{name},
-\code{description}, \code{sampling_unit}, or \code{sampling_rate} attributes.
-This argument is only valid when \code{key} is not a logical vector.}
+the function will return time series with the name of \code{key}.}
+
+\item{maxpage}{The maximum number of pages to extract.
+Due to the number of time series that can be returned, a maximum of 10 time series are returned per page.
+The default is 10 pages (100 time series). This argument is only valid when \code{category} is set to \code{TRUE}.}
 }
 \value{
-A list consisting of the selected series.
+A list consisting of the selected series with class \code{ts}.
+
+NOTE: Due to the large variation in the properties of time series stored in the CompEngine database,
+the \code{tsp} attribute (the start time in time units, the end time and the frequency) is not tailor made for each time series.
+If needed, user can customize the \code{tsp} attribute based on the output attribute of \code{samplingInformation}.
+
+Some of the attributes are listed as follow:
+\item{name}{The name of the time series}
+\item{description}{the description of the time series}
+\item{samplingInformation}{Indicating the frequency and other sampling related information}
+\item{tags}{The tags in the database}
+\item{category}{The name of the category and the hierarchy of the current category. See also \code{\link{category_scraping}}.}
+\item{sfi}{"special feature identification" information}
+\item{source}{The source of the time series}
+\item{tsp}{Tsp Attribute of Time-Series-like Objects. See \code{\link{tsp}}}
 }
 \description{
-Return time series where key matches some attribute
-or is a logical vector indicating which rows of meta to return.
+Return a time series with a specified name or a list of time series in a specified category.
 }
 \examples{
 # Getting series within Finance category (including subcategory)
 cets_finance <- get_cets("finance")
-unique(mapply(attr, cets_finance, MoreArgs = list(which = "category")))
-
-# Getting series whose sourse is Macaulay Library
-cets_ML <- get_cets("Macaulay Library", category = FALSE)
-unique(mapply(attr, cets_ML, MoreArgs = list(which = "source")))
-
-# Extract time series by a random generated logical vector with length equals to the number of series
-set.seed(2222)
-idx <- sample(c(TRUE, FALSE), NROW(meta), replace = TRUE)
-cets_logic <- get_cets(idx)
+unique(mapply(attr, cets_finance, MoreArgs = list(which = "category.name")))
+# Getting series by its name
+W138_finance_m4 <- get_cets("M4_W138_Finance_1", category = FALSE)
+}
+\seealso{
+\code{\link{category_scraping}}
 }
 \author{
-Rob J Hyndman
-
 Yangzhuoran Yang
 }

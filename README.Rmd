@@ -1,7 +1,7 @@
 ---
 output:
   md_document:
-    variant: markdown_github
+    variant: gfm
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -17,7 +17,6 @@ knitr::opts_chunk$set(
 # compenginets: Data from CompEngine
 
 The goal of compenginets is to provide all the time series from  http://www.comp-engine.org/.  
-`r NROW(compenginets::meta)` time series are available as of `r Sys.Date()`.  
 
 ## Installation
 
@@ -34,8 +33,9 @@ devtools::install_github("robjhyndman/compenginets")
 
 ```{r usage}
 library(compenginets)
-cets_finance <- get_cets("finance")
-str(cets_finance[[1]])
+# cets_finance <- get_cets("finance")
+W138_finance_m4 <- get_cets("M4_W138_Finance_1", category = FALSE)
+str(W138_finance_m4)
 
 ```
 
