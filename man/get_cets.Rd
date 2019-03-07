@@ -6,10 +6,49 @@
 \usage{
 get_cets(key, category = TRUE, maxpage = 10)
 }
+\arguments{
+\item{key}{The name of the time series or the name of the category,
+depending on value of \code{category}}
+
+\item{category}{If \code{TRUE}, the \code{get_cets}
+will return time series whose category match the keyword or belong to
+some subcategory under the matched category. If \code{FALSE},
+the function will return time series with the name of \code{key}.}
+
+\item{maxpage}{The maximum number of pages to extract.
+Due to the number of time series that can be returned, a maximum of 10 time series are returned per page.
+The default is 10 pages (100 time series). This argument is only valid when \code{category} is set to \code{TRUE}.}
+}
+\value{
+A list consisting of the selected series with class \code{ts}.
+
+NOTE: Due to the large variation in the properties of time series stored in the CompEngine database,
+the \code{tsp} attribute (the start time in time units, the end time and the frequency) is not tailor made for each time series.
+If needed, user can customize the \code{tsp} attribute based on the output attribute of \code{samplingInformation}.
+
+Some of the attributes are listed as follow:
+\item{name}{The name of the time series}
+\item{description}{the description of the time series}
+\item{samplingInformation}{Indicating the frequency and other sampling related information}
+\item{tags}{The tags in the database}
+\item{category}{The name of the category and the hierarchy of the current category. Seealso \code{\link{category_scraping}}.}
+\item{sfi}{"special feature identification" information}
+\item{source}{The source of the timeseries}
+\item{tsp}{Tsp Attribute of Time-Series-like Objects. See \code{\link{tsp}}}
+}
 \description{
-Extracting time series from the CompEngine database
+Return a time series with a specified name or a list of time series in a specified category.
 }
 \examples{
-finance_m4 <- get_cets("M4_W138_Finance_1", category = FALSE)
-a <- get_cets("real")
+# Getting series within Finance category (including subcategory)
+cets_finance <- get_cets("finance")
+unique(mapply(attr, cets_finance, MoreArgs = list(which = "category.name")))
+# Getting series by its name
+W138_finance_m4 <- get_cets("M4_W138_Finance_1", category = FALSE)
+}
+\seealso{
+\code{\link{category_scraping}}
+}
+\author{
+Yangzhuoran Yang
 }
