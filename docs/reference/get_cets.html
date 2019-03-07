@@ -11,8 +11,8 @@
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -32,8 +32,7 @@
 
 <meta property="og:title" content="Extracting time series from the CompEngine database — get_cets" />
 
-<meta property="og:description" content="Return time series where key matches some attribute
-or is a logical vector indicating which rows of meta to return." />
+<meta property="og:description" content="Return a time series with a specified name or a list of time series in a specified category." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -86,7 +85,12 @@ or is a logical vector indicating which rows of meta to return." />
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/robjhyndman/compenginets">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -100,57 +104,68 @@ or is a logical vector indicating which rows of meta to return." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Extracting time series from the CompEngine database</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/robjhyndman/compenginets/blob/master/R/get_cets.R'><code>R/get_cets.R</code></a></small>
     <div class="hidden name"><code>get_cets.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Return time series where key matches some attribute
-or is a logical vector indicating which rows of meta to return.</p>
+    <p>Return a time series with a specified name or a list of time series in a specified category.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>get_cets</span>(<span class='no'>key</span>, <span class='kw'>category</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>get_cets</span>(<span class='no'>key</span>, <span class='kw'>category</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>maxpage</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>key</th>
-      <td><p>A keyword describing attribute of the required time series,
-or a logical vector indicating which rows of meta to return.</p></td>
+      <td><p>The name of the time series or the name of the category,
+depending on value of <code>category</code></p></td>
     </tr>
     <tr>
       <th>category</th>
-      <td><p>A logical value indicating whether the selection process
-search <code>key</code> in <code>category</code> attribute. If <code>TRUE</code>, the <code>get_cets</code>
+      <td><p>If <code>TRUE</code>, the <code>get_cets</code>
 will return time series whose category match the keyword or belong to
 some subcategory under the matched category. If <code>FALSE</code>,
-the function will return time series which have the keyword in their <code>timeseries_id</code>,
-<code>timestamp_created</code>, <code>source</code>, <code>contributor</code>, <code>name</code>,
-<code>description</code>, <code>sampling_unit</code>, or <code>sampling_rate</code> attributes.
-This argument is only valid when <code>key</code> is not a logical vector.</p></td>
+the function will return time series with the name of <code>key</code>.</p></td>
+    </tr>
+    <tr>
+      <th>maxpage</th>
+      <td><p>The maximum number of pages to extract.
+Due to the number of time series that can be returned, a maximum of 10 time series are returned per page.
+The default is 10 pages (100 time series). This argument is only valid when <code>category</code> is set to <code>TRUE</code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list consisting of the selected series.</p>
+    <p>A list consisting of the selected series with class <code>ts</code>.</p>
+<p>NOTE: Due to the large variation in the properties of time series stored in the CompEngine database,
+the <code>tsp</code> attribute (the start time in time units, the end time and the frequency) is not tailor made for each time series.
+If needed, user can customize the <code>tsp</code> attribute based on the output attribute of <code>samplingInformation</code>.</p>
+<p>Some of the attributes are listed as follow:</p>
+<dt>name</dt><dd><p>The name of the time series</p></dd>
+<dt>description</dt><dd><p>the description of the time series</p></dd>
+<dt>samplingInformation</dt><dd><p>Indicating the frequency and other sampling related information</p></dd>
+<dt>tags</dt><dd><p>The tags in the database</p></dd>
+<dt>category</dt><dd><p>The name of the category and the hierarchy of the current category. See also <code><a href='category_scraping.html'>category_scraping</a></code>.</p></dd>
+<dt>sfi</dt><dd><p>"special feature identification" information</p></dd>
+<dt>source</dt><dd><p>The source of the time series</p></dd>
+<dt>tsp</dt><dd><p>Tsp Attribute of Time-Series-like Objects. See <code>tsp</code></p></dd>
+
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='category_scraping.html'>category_scraping</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Getting series within Finance category (including subcategory)</span>
 <span class='no'>cets_finance</span> <span class='kw'>&lt;-</span> <span class='fu'>get_cets</span>(<span class='st'>"finance"</span>)
-<span class='fu'>unique</span>(<span class='fu'>mapply</span>(<span class='no'>attr</span>, <span class='no'>cets_finance</span>, <span class='kw'>MoreArgs</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>which</span> <span class='kw'>=</span> <span class='st'>"category"</span>)))</div><div class='output co'>#&gt; [1] "Opening prices"   "High low"         "Finance"          "Crude oil prices"
-#&gt; [5] "Traded volume"    "Exchange rate"    "Oil stocks"       "Gas prices"      </div><div class='input'>
-<span class='co'># Getting series whose sourse is Macaulay Library</span>
-<span class='no'>cets_ML</span> <span class='kw'>&lt;-</span> <span class='fu'>get_cets</span>(<span class='st'>"Macaulay Library"</span>, <span class='kw'>category</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>unique</span>(<span class='fu'>mapply</span>(<span class='no'>attr</span>, <span class='no'>cets_ML</span>, <span class='kw'>MoreArgs</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>which</span> <span class='kw'>=</span> <span class='st'>"source"</span>)))</div><div class='output co'>#&gt; [1] "Macaulay Library"</div><div class='input'>
-<span class='co'># Extract time series by a random generated logical vector with length equals to the number of series</span>
-<span class='fu'>set.seed</span>(<span class='fl'>2222</span>)
-<span class='no'>idx</span> <span class='kw'>&lt;-</span> <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>), <span class='fu'>NROW</span>(<span class='no'>meta</span>), <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>cets_logic</span> <span class='kw'>&lt;-</span> <span class='fu'>get_cets</span>(<span class='no'>idx</span>)</div></pre>
+<span class='fu'>unique</span>(<span class='fu'>mapply</span>(<span class='no'>attr</span>, <span class='no'>cets_finance</span>, <span class='kw'>MoreArgs</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>which</span> <span class='kw'>=</span> <span class='st'>"category.name"</span>)))</div><div class='output co'>#&gt; [1] "Finance"</div><div class='input'><span class='co'># Getting series by its name</span>
+<span class='no'>W138_finance_m4</span> <span class='kw'>&lt;-</span> <span class='fu'>get_cets</span>(<span class='st'>"M4_W138_Finance_1"</span>, <span class='kw'>category</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -158,14 +173,14 @@ This argument is only valid when <code>key</code> is not a logical vector.</p></
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
 
     <h2>Author</h2>
     
-Rob J Hyndman
-
 Yangzhuoran Yang
 
   </div>
@@ -173,7 +188,7 @@ Yangzhuoran Yang
 
       <footer>
       <div class="copyright">
-  <p>Developed by Rob Hyndman, Yangzhuoran Yang.</p>
+  <p>Developed by <a href='http://robjhyndman.com'>Rob Hyndman</a>, <a href='http://yangzhuoranyang.com'>Yangzhuoran Yang</a>.</p>
 </div>
 
 <div class="pkgdown">
