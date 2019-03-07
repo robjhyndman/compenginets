@@ -16,7 +16,6 @@ knitr::opts_chunk$set(
 ```
 
 The goal of *compenginets* is to provide all the time series from  http://www.comp-engine.org/.  
-`r NROW(compenginets::meta)` time series are available as of `r Sys.Date()`.  
 
 
 ## Installation
@@ -36,49 +35,33 @@ devtools::install_github("robjhyndman/compenginets")
 
 ## Usage
 
-This package intends to provide means to access data from CompEngine with ease with an `R` solution. To get the data stored in the package, directly calling the name of the data set is feasible (e.g. `cets1`, `cets2`, etc. See `?cets`), but not recommended. Instead, function `get_cets` can be used to return time series where key matches some attribute or is a logical vector indicating which rows of meta to return.  
-With the default option, `get_cets` returns time series whose category match the keyword or belong to some subcategory under the matched category. 
+This package intends to provide means to access data from CompEngine with ease with an `R` solution. Function `get_cets` can be used to return time series with a specified name or within a certain category. By default, `get_cets` returns the first 10 pages (maximum 10 in one page) time series within the category which matches argument `key`.  
 
 ```{r usage}
 library(compenginets)
 
-# Getting series within Finance category (including subcategory)
+# Get series within Finance category (including subcategory)
 cets_finance <- get_cets("finance")
+length(cets_finance)
 str(cets_finance[[1]])
 
-# categories and subcategories
+# Supply the numer of pages need with option maxpage
+# A maximum of 10 time series are in one page
+cets_finance_20 <- get_cets("finance", maxpage = 2)
+length(cets_finance_20)
 
-unique(mapply(attr, cets_finance, MoreArgs = list(which = "category")))
+# Switch category to FALSE to get the time series matching a name
+W138_finance_m4 <- get_cets("M4_W138_Finance_1", category = FALSE)
+str(W138_finance_m4)
 
 ```
 
-Associated with each time series, attributes can be viewed individually, or collectively by calling `meta`. `category` attribute of selected time series store subcategories under "Finance" in this case (or "Finance" if there is no subcategories). Information about categories and their subcategories are stored in `cate_path`.
+A list of category can be obtained externally.
 
-```{r}
-head(meta)
-
-str(head(cate_path, 12))
+```{r category}
+cate_path <- category_scraping()
+str(cate_path, list.len = 10)
 ```
-
-Using the option of `get_cets`, searching keyword in attributes other than category can be achieved. Other possible attributes are `timeseries_id`, `timestamp_created`, `source`, `contributor`, `name`, `description`, `sampling_unit`, or `sampling_rate`.
-
-```{r}
-# Getting series whose sourse is Macaulay Library
-cets_ML <- get_cets("Macaulay Library", category = FALSE)
-
-unique(mapply(attr, cets_ML, MoreArgs = list(which = "source")))
-```
-
-`get_cets` can also work with a logical vector indicating which rows of meta to return. 
-
-```{r}
-# Extract time series by a random generated logical vector with length equals to the number of series
-set.seed(2222)
-idx <- sample(c(TRUE, FALSE), NROW(meta), replace = TRUE)
-cets_logic <- get_cets(idx)
-str(head(cets_logic, 2))
-```
-
 
 
 

@@ -31,9 +31,9 @@ Some of the attributes are listed as follow:
 \item{description}{the description of the time series}
 \item{samplingInformation}{Indicating the frequency and other sampling related information}
 \item{tags}{The tags in the database}
-\item{category}{The name of the category and the hierarchy of the current category. Seealso \code{\link{category_scraping}}.}
+\item{category}{The name of the category and the hierarchy of the current category. See also \code{\link{category_scraping}}.}
 \item{sfi}{"special feature identification" information}
-\item{source}{The source of the timeseries}
+\item{source}{The source of the time series}
 \item{tsp}{Tsp Attribute of Time-Series-like Objects. See \code{\link{tsp}}}
 }
 \description{
