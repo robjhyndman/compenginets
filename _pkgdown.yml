@@ -49,8 +49,10 @@ navbar:
 
 
 reference:
+- title: Package
+  contents:
+  - '`compenginets-package`'
 - title: Function
-  desc: Extracting data.
   contents:
   - '`get_cets`'
   - '`category_scraping`'
