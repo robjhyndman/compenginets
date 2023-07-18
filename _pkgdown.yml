@@ -18,6 +18,7 @@ authors:
     href: http://yangzhuoranyang.com
 
 navbar:
+  type: light
   structure:
     left:
     - home
