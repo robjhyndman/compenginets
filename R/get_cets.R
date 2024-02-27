@@ -49,12 +49,12 @@ get_cets <- function(key, category = TRUE, maxpage = 10){
     content <- access_api(url = URL, path = PATH)
     content_list <- get_datalist(content)
     if(content$totalPages > 1 & maxpage > 1){
+      # Combine pages
       content_rest <- lapply(2:min(maxpage, content$totalPages),
                              category_rest, key = key, URL = URL, PATH = PATH)
+      rest_list <- do.call(c,lapply(content_rest, get_datalist))
+      content_list <- c(content_list, rest_list)
     }
-    rest_list <- do.call(c,lapply(content_rest, get_datalist))
-
-    end <- c(content_list, rest_list)
   } else {
     PATH <- paste0("api/public/timeseries?name=", key)
     content <- access_api(url = URL, path = PATH)
@@ -69,13 +69,12 @@ get_cets <- function(key, category = TRUE, maxpage = 10){
 
     sfi <- content$sfi
     data <- content$timeSeries[["raw"]]
-    end <- give_attributes(data = data, name = name, description = description,
+    content_list <- give_attributes(data = data, name = name, description = description,
                   samplingInformation = samplingInformation,
                   tags = tags,  cnu = cnu, sfi = sfi, source = source)
   }
-  return(end)
+  return(content_list)
 }
-
 
 
 access_api <- function(url, path){
