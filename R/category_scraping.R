@@ -13,7 +13,7 @@ category_scraping <- function(){
   slug <- c(slug, vec_tem[grep("/", vec_tem)])
   slug <- unique(gsub("-", " ", slug))
   category <- unique(unlist(strsplit(slug, "/")))
-  cate_path <- setNames(split(category, seq(length(category))), category)
+  cate_path <- stats::setNames(split(category, seq(length(category))), category)
   cate_path <- mapply(walk_along, cate_path, MoreArgs = list(slug=slug), SIMPLIFY = FALSE)
   return(cate_path)
 }

@@ -100,7 +100,9 @@ get_datalist <- function(content){
   samplingInformation <- split(samplingInformation, seq(NROW(samplingInformation)))
 
   source <- try(content$timeSeries[,"source"][,"name"], silent = TRUE)
-  if(class(source) == "try-error") source <- rep(NA, NROW(name)) else
+  if(inherits(source, "try-error"))
+    source <- rep(NA, NROW(name))
+  else
     source <- split(source, seq(NROW(source)))
 
   tags <- lapply(content$timeSeries[,"tags"], function(x) x[,"name"])
@@ -121,6 +123,6 @@ give_attributes <- function(data, name, description, samplingInformation, tags, 
   attributes(data) <- c(name = name, description = description,
                         samplingInformation = samplingInformation,
                         tags = list(tags),  category = cnu, sfi = sfi, source = source)
-  data <- ts(data)
+  data <- stats::ts(data)
   return(data)
 }
