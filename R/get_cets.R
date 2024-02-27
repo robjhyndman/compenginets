@@ -43,6 +43,8 @@ get_cets <- function(key, category = TRUE, maxpage = 10){
   URL <- "https://www.comp-engine.org"
 
   if(category){
+    # Fill spaces with %20
+    key <- gsub(" ", "%20", key)
     PATH <- paste0("api/public/timeseries/filter?format=json&category=",key,"&page=",1)
     content <- access_api(url = URL, path = PATH)
     content_list <- get_datalist(content)
