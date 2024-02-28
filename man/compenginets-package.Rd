@@ -2,18 +2,28 @@
 % Please edit documentation in R/compenginets-package.R
 \docType{package}
 \name{compenginets-package}
-\alias{compenginets-package}
 \alias{compenginets}
-\title{Data from CompEngine}
-\source{
-\url{https://www.comp-engine.org/}.
-}
+\alias{compenginets-package}
+\title{compenginets: Time series from http://www.comp-engine.org/timeseries/}
 \description{
-The time series from CompEngine, a self-organizing database of time series data.
+All time series from the comp-engine database are included, along with some meta data.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://pkg.robjhyndman.com/compenginets}
+  \item \url{https://github.com/robjhyndman/compenginets}
+  \item Report bugs at \url{https://github.com/robjhyndman/compenginets/issues}
+}
+
 }
 \author{
-Rob J Hyndman. \email{Rob.Hyndman@monash.edu}
+\strong{Maintainer}: Rob Hyndman \email{Rob.Hyndman@monash.edu} (\href{https://orcid.org/0000-0002-2140-5352}{ORCID})
 
-Yangzhuoran Yang. \email{Fin.Yang@monash.edu}
+Authors:
+\itemize{
+  \item Yangzhuoran Yang \email{Fin.Yang@monash.edu}
 }
-\keyword{package}
+
+}
+\keyword{internal}
