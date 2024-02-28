@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 # compenginets: Data from CompEngine
 
-The goal of compenginets is to provide all the time series from  http://www.comp-engine.org/.  
+The goal of compenginets is to provide all the time series from  https://www.comp-engine.org/
 
 ## Installation
 

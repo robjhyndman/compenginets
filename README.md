@@ -3,7 +3,7 @@
 # compenginets: Data from CompEngine
 
 The goal of compenginets is to provide all the time series from
-<http://www.comp-engine.org/>.
+<https://www.comp-engine.org/>
 
 ## Installation
 
@@ -31,9 +31,9 @@ str(W138_finance_m4)
 #>  - attr(*, "tags")= chr [1:3] "finance" "M4" "weekly"
 #>  - attr(*, "category.name")= chr "Finance"
 #>  - attr(*, "category.uri")= chr "real/finance/"
-#>  - attr(*, "sfi.name")= chr [1:16] "CO_Embed2_Basic_tau.incircle_1" "CO_Embed2_Basic_tau.incircle_2" "FC_LocalSimple_mean1.taures" "DN_HistogramMode_10" ...
-#>  - attr(*, "sfi.prettyName")= chr [1:16] "Autocorrelation measure" "Autocorrelation measure" "Predictability measure" "Distribution measure" ...
-#>  - attr(*, "sfi.value")= num [1:16] 58.907 0.207 11.641 83.933 18.947 ...
+#>  - attr(*, "sfi.name")= chr [1:22] "DN_HistogramMode_5" "DN_HistogramMode_10" "CO_Embed2_Dist_tau_d_expfit_meandiff" "CO_f1ecac" ...
+#>  - attr(*, "sfi.prettyName")= chr [1:22] "DN_HistogramMode_5" "DN_HistogramMode_10" "CO_Embed2_Dist_tau_d_expfit_meandiff" "CO_f1ecac" ...
+#>  - attr(*, "sfi.value")= num [1:22] 84 86.8 65.2 14 23.8 ...
 #>  - attr(*, "source")= logi NA
 ```
 

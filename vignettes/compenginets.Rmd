@@ -1,5 +1,6 @@
 ---
 title: "Introduction to the compenginets package"
+author: "Yangzhuoran Fin Yang"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -15,12 +16,12 @@ knitr::opts_chunk$set(
 )
 ```
 
-The goal of *compenginets* is to provide all the time series from  http://www.comp-engine.org/.  
+The goal of *compenginets* is to provide all the time series from  https://www.comp-engine.org/
 
 
 ## Installation
 
-`compenginets` currently isn't on CRAN.  
+`compenginets` currently isn't on CRAN.
 You can install the **development** version from
 [Github](https://github.com/robjhyndman/compenginets)
 
@@ -29,13 +30,13 @@ You can install the **development** version from
 devtools::install_github("robjhyndman/compenginets")
 ```
 
-## CompEngine: A self-organizing database of time-series data 
+## CompEngine: A self-organizing database of time-series data
 
-[CompEngine](https://www.comp-engine.org/) is an online time-series database which allow users to upload and interactively compare data with similar time series data set. The website was build by [Nick Jones](https://www.imperial.ac.uk/people/nick.jones) and [Ben Fulcher](http://www.benfulcher.com/), based on the early work conducted by Ben D. Fulcher, Max A. Little, and Nick S. Jones (2013). To provide time series similar to the data user uploads, it compute features of the data, and find existing time series matching those features. The features list and detailed description can be found on the [page](https://www.comp-engine.org/#!the-research) of CompEngine.  
+[CompEngine](https://www.comp-engine.org/) is an online time-series database which allow users to upload and interactively compare data with similar time series data set. The website was build by [Nick Jones](https://www.imperial.ac.uk/people/nick.jones) and [Ben Fulcher](http://www.benfulcher.com/), based on the early work conducted by Ben D. Fulcher, Max A. Little, and Nick S. Jones (2013). To provide time series similar to the data user uploads, it compute features of the data, and find existing time series matching those features. The features list and detailed description can be found on the [page](https://www.comp-engine.org/#!the-research) of CompEngine.
 
 ## Usage
 
-This package intends to provide means to access data from CompEngine with ease with an `R` solution. Function `get_cets` can be used to return time series with a specified name or within a certain category. By default, `get_cets` returns the first 10 pages (maximum 10 in one page) time series within the category which matches argument `key`.  
+This package intends to provide means to access data from CompEngine with ease with an `R` solution. Function `get_cets` can be used to return time series with a specified name or within a certain category. By default, `get_cets` returns the first 10 pages (maximum 10 in one page) time series within the category which matches argument `key`.
 
 ```{r usage}
 library(compenginets)
@@ -67,7 +68,7 @@ str(cate_path, list.len = 10)
 
 ## Sources
 
-[B.D. Fulcher, M.A. Little, N.S. Jones. Highly comparative time-series analysis: the empirical structure of time series and their methods. J. Roy. Soc. Interface 10, 20130048, 2013](http://rsif.royalsocietypublishing.org/content/10/83/20130048)  
+[B.D. Fulcher, M.A. Little, N.S. Jones. Highly comparative time-series analysis: the empirical structure of time series and their methods. J. Roy. Soc. Interface 10, 20130048, 2013](https://royalsocietypublishing.org/doi/10.1098/rsif.2013.0048)
 
 
 ## License

@@ -4,14 +4,14 @@
 \name{compenginets-package}
 \alias{compenginets}
 \alias{compenginets-package}
-\title{compenginets: Time series from http://www.comp-engine.org/timeseries/}
+\title{compenginets: Time series from <https://www.comp-engine.org/>}
 \description{
 All time series from the comp-engine database are included, along with some meta data.
 }
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://pkg.robjhyndman.com/compenginets}
+  \item \url{https://pkg.robjhyndman.com/compenginets/}
   \item \url{https://github.com/robjhyndman/compenginets}
   \item Report bugs at \url{https://github.com/robjhyndman/compenginets/issues}
 }
