@@ -45,7 +45,7 @@ cets_finance <- get_cets("finance")
 length(cets_finance)
 str(cets_finance[[1]])
 
-# Supply the numer of pages need with option maxpage
+# Supply the number of pages need with option maxpage
 # A maximum of 10 time series are in one page
 cets_finance_20 <- get_cets("finance", maxpage = 2)
 length(cets_finance_20)
@@ -53,7 +53,6 @@ length(cets_finance_20)
 # Switch category to FALSE to get the time series matching a name
 W138_finance_m4 <- get_cets("M4_W138_Finance_1", category = FALSE)
 str(W138_finance_m4)
-
 ```
 
 A list of category can be obtained externally.
