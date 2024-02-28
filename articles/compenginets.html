@@ -77,6 +77,8 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Introduction to the compenginets package</h1>
+                        <h4 data-toc-skip class="author">Yangzhuoran Fin
+Yang</h4>
             
             <h4 data-toc-skip class="date">2024-02-28</h4>
       
@@ -87,12 +89,12 @@
     
     
 <p>The goal of <em>compenginets</em> is to provide all the time series
-from <a href="http://www.comp-engine.org/" class="external-link uri">http://www.comp-engine.org/</a>.</p>
+from <a href="https://www.comp-engine.org/" class="external-link uri">https://www.comp-engine.org/</a></p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p><code>compenginets</code> currently isn’t on CRAN.<br>
-You can install the <strong>development</strong> version from <a href="https://github.com/robjhyndman/compenginets" class="external-link">Github</a></p>
+<p><code>compenginets</code> currently isn’t on CRAN. You can install
+the <strong>development</strong> version from <a href="https://github.com/robjhyndman/compenginets" class="external-link">Github</a></p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"robjhyndman/compenginets"</span><span class="op">)</span></span></code></pre></div>
@@ -122,7 +124,7 @@ name or within a certain category. By default, <code>get_cets</code>
 returns the first 10 pages (maximum 10 in one page) time series within
 the category which matches argument <code>key</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://pkg.robjhyndman.com/compenginets" class="external-link">compenginets</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://pkg.robjhyndman.com/compenginets/" class="external-link">compenginets</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Get series within Finance category (including subcategory)</span></span>
 <span><span class="va">cets_finance</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_cets.html">get_cets</a></span><span class="op">(</span><span class="st">"finance"</span><span class="op">)</span></span>
@@ -142,7 +144,7 @@ the category which matches argument <code>key</code>.</p>
 <span><span class="co">#&gt;  - attr(*, "category.uri")= chr "real/finance/"</span></span>
 <span><span class="co">#&gt;  - attr(*, "sfi.name")= chr [1:22] "DN_HistogramMode_5" "DN_HistogramMode_10" "CO_Embed2_Dist_tau_d_expfit_meandiff" "CO_f1ecac" ...</span></span>
 <span><span class="co">#&gt;  - attr(*, "sfi.prettyName")= chr [1:22] "DN_HistogramMode_5" "DN_HistogramMode_10" "CO_Embed2_Dist_tau_d_expfit_meandiff" "CO_f1ecac" ...</span></span>
-<span><span class="co">#&gt;  - attr(*, "sfi.value")= num [1:22] 35.9 57 72.8 56.8 50.1 ...</span></span>
+<span><span class="co">#&gt;  - attr(*, "sfi.value")= num [1:22] 36 56.9 72.9 56.8 50 ...</span></span>
 <span><span class="co">#&gt;  - attr(*, "source")= chr NA</span></span>
 <span></span>
 <span><span class="co"># Supply the number of pages need with option maxpage</span></span>
@@ -186,7 +188,7 @@ the category which matches argument <code>key</code>.</p>
 <div class="section level2">
 <h2 id="sources">Sources<a class="anchor" aria-label="anchor" href="#sources"></a>
 </h2>
-<p><a href="http://rsif.royalsocietypublishing.org/content/10/83/20130048" class="external-link">B.D.
+<p><a href="https://royalsocietypublishing.org/doi/10.1098/rsif.2013.0048" class="external-link">B.D.
 Fulcher, M.A. Little, N.S. Jones. Highly comparative time-series
 analysis: the empirical structure of time series and their methods. J.
 Roy. Soc. Interface 10, 20130048, 2013</a></p>
